@@ -3,7 +3,6 @@ package com.aca.TicTacToe;
 import java.util.Scanner;
 
 public class Player {
-    private static Scanner sc = new Scanner(System.in);
     private MoveType moveType;
     private int movesCount;
 
@@ -24,12 +23,14 @@ public class Player {
         movesCount++;
     }
 
-    public InputErrorType tryMakeMove() {
+    public InputErrorType tryMakeMove(Board gameBoard) {
+        Scanner sc = new Scanner(System.in);
+
         System.out.println("Enter row index:");
         int row = sc.nextInt();
         System.out.println("Enter column index:");
         int col = sc.nextInt();
-        InputErrorType inputErrorType = Board.trySetValue(row, col, this.moveType);
+        InputErrorType inputErrorType = gameBoard.trySetValue(row, col, this.moveType);
         if (inputErrorType.equals(InputErrorType.CORRECT)) {
             incrementMovesCount();
             return InputErrorType.CORRECT;

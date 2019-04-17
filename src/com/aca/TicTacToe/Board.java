@@ -1,22 +1,15 @@
 package com.aca.TicTacToe;
 
 public class Board {
-    private static Board gameBoard;
-    private static MoveType[][] board;
-    private static int winSequenceSize;
+    private MoveType[][] board;
+    private int winSequenceSize;
 
-    private Board(int size, int winSequence) {
+    public Board(int size, int winSequence) {
         board = new MoveType[size][size];
         winSequenceSize = winSequence;
     }
 
-    static Board createGameBoard(int size, int winSequenceSize) {
-        if (gameBoard == null)
-            gameBoard = new Board(size, winSequenceSize);
-        return gameBoard;
-    }
-
-    static void drawGameBoard() {
+    void drawGameBoard() {
         System.out.print("  ");
         for (int i = 0; i < board[0].length; i++) {
             System.out.print(String.format("  %s ", i));
@@ -39,7 +32,7 @@ public class Board {
         }
     }
 
-    static InputErrorType trySetValue(int row, int col, MoveType moveType) {
+    InputErrorType trySetValue(int row, int col, MoveType moveType) {
         if (row < 0 || row >= board.length) {
             return InputErrorType.ROW_INCORRECT;
         }
@@ -52,7 +45,7 @@ public class Board {
         return InputErrorType.CORRECT;
     }
 
-    static boolean isGameFinished(MoveType moveType) {
+    boolean isGameFinished(MoveType moveType) {
         if (isGameFinishedHorizontally(moveType))
             return true;
         if (isGameFinishedVertically(moveType))
@@ -62,11 +55,11 @@ public class Board {
         return false;
     }
 
-    static boolean isGameFinishedHorizontally(MoveType moveType) {
+    private boolean isGameFinishedHorizontally(MoveType moveType) {
         int sequenceCount;
         for (int row = 0; row < board.length; row++) {
             sequenceCount = 0;
-            for (int col = 0; col < board[row].length && winSequenceSize <= board[row].length - (col + 1) + sequenceCount; col++) {
+            for (int col = 0; col < board[row].length && winSequenceSize <= board[row].length - col + sequenceCount; col++) {
                 if (board[row][col] != null && board[row][col].equals(moveType))
                     sequenceCount++;
                 else
@@ -79,11 +72,11 @@ public class Board {
         return false;
     }
 
-    static boolean isGameFinishedVertically(MoveType moveType) {
+    private boolean isGameFinishedVertically(MoveType moveType) {
         int sequenceCount;
         for (int col = 0; col < board[0].length; col++) {
             sequenceCount = 0;
-            for (int row = 0; row < board.length && winSequenceSize <= board.length - (row + 1) + sequenceCount; row++) {
+            for (int row = 0; row < board.length && winSequenceSize <= board.length - row  + sequenceCount; row++) {
                 if (board[row][col] != null && board[row][col].equals(moveType))
                     sequenceCount++;
                 else
@@ -96,7 +89,7 @@ public class Board {
         return false;
     }
 
-    static boolean isGameFinishedDiagonally(MoveType moveType) {
+    private boolean isGameFinishedDiagonally(MoveType moveType) {
         int sequenceCount;
         //check diagonals from right to left
         int row = 0;
